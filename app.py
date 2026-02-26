@@ -70,7 +70,7 @@ def render_plot(current_data, N, part, site, nn, nn_pair):
     )
     
     # start figure
-    fig, axes = plt.subplots(1,2, figsize=(12, 5))
+    fig, axes = plt.subplots(1,2, figsize=(10, 4), dpi=150)
     
     # Left figure: scatter plot of distance and coupling 
     axes[0].scatter(dists[site_mask][N:], site_coupling[site_mask][N:], marker='.', color="r", s=15) # plot points not in first electrode side
