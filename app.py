@@ -6,7 +6,7 @@ import joblib
 
 @st.cache_resource
 def load_data():
-    return joblib.load("scripts/conv_data/RSE_data_tiling_conv.pkl")
+    return joblib.load("conv_data/RSE_data_tiling_conv.pkl")
 
 data = load_data()
 
