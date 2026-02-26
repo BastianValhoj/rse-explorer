@@ -27,7 +27,7 @@ RSE_E0 = RSE_re[0, ...]
 
 selected_site = st.sidebar.slider("Site Index", min_value=0, max_value=selected_N-1, value=0)
 
-part = st.sidebar.radio("Part", options=["Real", "Imag"]).lower()
+part = st.sidebar.radio("Part", options=["Imag","Real"]).lower()
 
 max_nn = np.max([selected_site, (selected_N - 1 - selected_site)])
 selected_nn = st.sidebar.slider("Num NN", min_value=0, max_value=max_nn, value=0)
