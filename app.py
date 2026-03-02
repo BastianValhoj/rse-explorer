@@ -15,6 +15,18 @@ st.sidebar.header("Parameters")
 n_options = sorted([int(k) for k in data.keys() if k.isdigit()])
 selected_N = st.sidebar.selectbox("Tiling (N)", options=n_options)
 
+vmin_real = 0
+vmax_real = 0
+vmin_imag = 0
+vmax_imag = 0
+for key in data:
+    current = data[key]
+    rse = current["RSE_re"]
+    vmin = np.min([np.real(rse), np.imag(rse)])
+    vmax = np.max([np.real(rse), np.imag(rse)])
+    
+    
+        
 current = data[str(selected_N)]
 energies = current["E"]
 xyz = current["xyz"]
@@ -49,8 +61,8 @@ def render_plot(current_data, N, part, site, nn, nn_pair):
     site_coupling = RSE_E0_part[site, :]
     
     
-    vmax = np.max(np.abs(RSE_E0_part))
-    vmin = -vmax
+    # vmax = np.max(np.abs(RSE_E0_part))
+    # vmin = -vmax
     
     # calculate distance  
     all_coords = xyz
