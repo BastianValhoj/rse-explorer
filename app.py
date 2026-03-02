@@ -118,22 +118,16 @@ def render_plot(current_data, N, part, site, nn, nn_pair):
                 axes[1].text(x=x[s], y=y[s]-1, s=s, horizontalalignment="right", verticalalignment="top")   
             elif s == site: # if it is site, plot with arrow on right
                 axes[1].annotate(site, xy=(x[site], y[site]), xycoords="data", xytext=(x[site]+2*N/9, y[site]+3*N/9), arrowprops={"color":"k", "width":0.10, "headwidth":3.0, "headlength": 4.0}, )
-    if nn:
-        farthest_nn_mask = np.nonzero(np.isclose(dists_site, farthest_dist, atol=1e-2))[0]
-        if not nn_pair:
-            farthest_nn_mask = farthest_nn_mask[[0]]
-        
-        # print(f"mask = {farthest_nn_mask}")
-        # farthest_nn_mask = farthest_nn_mask[farthest_nn_mask < N]
-        # print(f"mask = {farthest_nn_mask}")
-        # farthest_nn_mask = np.unique(farthest_nn_mask)
-        # print(f"mask = {farthest_nn_mask}")
-        
-        axes[0].axvline(farthest_dist, color='k', linestyle="--", lw=1, alpha=0.5)
-        
-        coupling_for_farthest_nn = site_coupling[farthest_nn_mask]
-        for coup in coupling_for_farthest_nn:
-            axes[0].annotate(text=f" {coup:.1f}", xy=(farthest_dist, coup), xytext=(farthest_dist, coup))
+    # if nn:
+    farthest_nn_mask = np.nonzero(np.isclose(dists_site, farthest_dist, atol=1e-2))[0]
+    if not nn_pair:
+        farthest_nn_mask = farthest_nn_mask[[0]]
+    
+    axes[0].axvline(farthest_dist, color='k', linestyle="--", lw=1, alpha=0.5)
+    
+    coupling_for_farthest_nn = site_coupling[farthest_nn_mask]
+    for coup in coupling_for_farthest_nn:
+        axes[0].annotate(text=f" {coup:.1f}", xy=(farthest_dist, coup), xytext=(farthest_dist, coup))
         
         
         
