@@ -15,15 +15,14 @@ st.sidebar.header("Parameters")
 n_options = sorted([int(k) for k in data.keys() if k.isdigit()])
 selected_N = st.sidebar.selectbox("Tiling (N)", options=n_options)
 
-vmin_real = 0
-vmax_real = 0
-vmin_imag = 0
-vmax_imag = 0
 for key in n_options:
     _current = data[str(key)]
     _rse = _current["RSE_re"]
-    vmin = np.min([np.real(_rse), np.imag(_rse)])
-    vmax = np.max([np.real(_rse), np.imag(_rse)])
+    _vmin = np.min([np.real(_rse), np.imag(_rse)])
+    _vmax = np.max([np.real(_rse), np.imag(_rse)])
+
+vmin = np.min(np.abs([_vmin, _vmax]))
+vmax = np.max(np.abs([_vmin, _vmax]))
     
     
         
