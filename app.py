@@ -19,11 +19,11 @@ vmin_real = 0
 vmax_real = 0
 vmin_imag = 0
 vmax_imag = 0
-for key in data:
-    current = data[key]
-    rse = current["RSE_re"]
-    vmin = np.min([np.real(rse), np.imag(rse)])
-    vmax = np.max([np.real(rse), np.imag(rse)])
+for key in n_options:
+    _current = data[str(key)]
+    _rse = _current["RSE_re"]
+    vmin = np.min([np.real(_rse), np.imag(_rse)])
+    vmax = np.max([np.real(_rse), np.imag(_rse)])
     
     
         
@@ -31,7 +31,6 @@ current = data[str(selected_N)]
 energies = current["E"]
 xyz = current["xyz"]
 x,y,z = xyz.T
-
 # E0_idx = np.searchsorted(E, 0) # find the index where E==0 (or the first instance)
 RSE_re = current["RSE_re"]
 
