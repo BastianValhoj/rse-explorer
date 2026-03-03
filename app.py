@@ -46,8 +46,12 @@ for N_key in n_options:
     for eta_key in eta_options: 
         _current = data[f'N_{N_key}'][f'eta_{eta_key}']
         _rse = _current
-        _vmin = np.min([_vmin, np.real(_rse), np.imag(_rse)])
-        _vmax = np.max([_vmax, np.real(_rse), np.imag(_rse)])
+        _vmin = np.min([_vmin,
+            np.min([np.real(_rse), np.imag(_rse)])
+        ])
+        _vmax = np.max([_vmax,
+            np.max([_vmax, np.real(_rse), np.imag(_rse)])
+        ])
 vmax = np.max(np.abs([_vmin, _vmax])) # find the greatest magnitude
 vmin = -vmax # set min as the negative greatest magnitude
 
