@@ -62,7 +62,7 @@ current_N = data[f'N_{selected_N}']
 xyz = np.asanyarray(current_N["xyz"])
 x,y,z = xyz.T
 
-E_idx = np.argwhere(E == 0)[0,0] # find the index where E==0 (or the first instance)
+E_idx = np.argwhere(E_options == 0)[0,0] # find the index where E==0 (or the first instance)
 RSE = current_N[f'eta_{selected_eta}'][E_idx,...]
 
 
