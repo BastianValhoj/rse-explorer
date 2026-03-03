@@ -88,7 +88,8 @@ def render_plot(N, part, site, nn, nn_pair):
     all_coords = xyz
     site_coord = xyz[[site],:]
     electrode_coords = xyz[:N, :]
-    site_mask = np.delete(np.arange(0, xyz.shape[0]), site)
+    # site_mask = np.delete(np.arange(0, xyz.shape[0]), site)
+    site_mask = np.arange(0, xyz.shape[0])
     diff = all_coords[:, None, :] - site_coord[None, :, :] # (M, 1, N) - (1, K, N) = (M, K, L)
     diff_site = site_coord[:, None, :] - electrode_coords[None, :, :] # (1, 1, N) - (1, M, N) = (1, M, N)
     dists = np.linalg.norm(diff, axis=2).squeeze()
