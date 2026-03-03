@@ -7,7 +7,7 @@ import h5py
 # Load data
 @st.cache_resource
 def load_data():
-    return h5py.File("RSE_data_tiling_conv.pkl", 'r')
+    return h5py.File("RSE_data_tiling_conv.h5", 'r')
 
 data = load_data()
 
