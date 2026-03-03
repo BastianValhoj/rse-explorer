@@ -50,23 +50,8 @@ selected_nn = st.sidebar.slider("Num NN", min_value=0, max_value=max_nn, value=0
 # create checkbox for left plot: for a given NN, show only one or both coupling values
 show_nn_pair = st.sidebar.checkbox("Show paris of NN")
 
-# find global min/max for y-axis on left plot, and colorbar on right plot
-# _vmin = 0
-# _vmax = 0
-# for N_key in n_options:
-#     for eta_key in eta_options: 
-#         _current = data[f'N_{N_key}'][f'eta_{eta_key}']
-#         _rse = _current
-#         _vmin = np.min([_vmin,
-#             np.min([np.real(_rse), np.imag(_rse)])
-#         ])
-#         _vmax = np.max([_vmax,
-#             np.max([np.real(_rse), np.imag(_rse)])
-#         ])
-vmin = data.attrs["vmin"]
-vmax = data.attrs["vmax"]
-vmax = np.max(np.abs([vmin, vmax])) # find the greatest magnitude
-vmin = -vmax # set min as the negative greatest magnitude
+# create checkbox for global min max
+use_global_minmax = st.sidebar.checkbox("Use global min/max")
 
 # from selected N and eta, define plotting parameters
 xyz = np.asanyarray(current_N["xyz"])
@@ -74,6 +59,18 @@ x,y,z = xyz.T
 
 E_idx = np.argwhere(E_options == 0)[0,0] # find the index where E==0 (or the first instance)
 RSE = current_N[selected_eta_key][E_idx,...]
+
+if use_global_minmax:
+    vmin = data.attrs["vmin"]
+    vmax = data.attrs["vmax"]
+    vmax = np.max(np.abs([vmin, vmax])) # find the greatest magnitude
+    vmin = -vmax # set min as the negative greatest magnitude
+elif not use_global_minmax:
+    vmin = np.min([np.real(RSE), np.imag(RSE)])
+    vmax = np.max([np.real(RSE), np.imag(RSE)])
+    vmax = np.max(np.abs([vmin, vmax]))
+    vmin = -vmax
+
 
 
 # --- Plotting logic ---
