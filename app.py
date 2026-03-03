@@ -24,8 +24,9 @@ selected_E = st.sidebar.selectbox("Energy (E)", options=E_options)
 
 # create dropwdown for eta
 eta_options = np.asanyarray(data.attrs["ETA"])
-selected_eta = st.sidebar.selectbox("Select eta", options=range(len(eta_options)),
+eta_idx = st.sidebar.selectbox("Select eta", options=range(len(eta_options)),
         format_func = lambda i: f"{eta_options[i]:.1e}")
+selected_eta = eta_options[eta_idx]
 
 # create slider for site to investigate
 selected_site = st.sidebar.slider("Site Index", min_value=0, max_value=selected_N-1, value=0)
