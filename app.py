@@ -99,7 +99,7 @@ def render_plot(N, part, site, nn, nn_pair):
             vmax*(1+2e-1)
     )
     # calcualte xlim as the maximum distance to last atom on the side (from idx 0 to N-1)
-    xlim = (0, np.linalg.norm(xyz[0, :] - xyz[N, :])*(1+1e-1)
+    xlim = (-1, np.linalg.norm(xyz[0, :] - xyz)*(1+1e-1)
     )
     
     # start figure
