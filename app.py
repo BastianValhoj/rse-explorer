@@ -50,7 +50,7 @@ for N_key in n_options:
             np.min([np.real(_rse), np.imag(_rse)])
         ])
         _vmax = np.max([_vmax,
-            np.max([_vmax, np.real(_rse), np.imag(_rse)])
+            np.max([np.real(_rse), np.imag(_rse)])
         ])
 vmax = np.max(np.abs([_vmin, _vmax])) # find the greatest magnitude
 vmin = -vmax # set min as the negative greatest magnitude
