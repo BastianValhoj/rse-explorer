@@ -34,7 +34,7 @@ eta_keys = sorted(
 selected_eta_key = st.sidebar.selectbox(
     "Select eta", 
     options=eta_keys,
-    format_func=lambda x: f"{float(x.split('_')[1]):.1e}"
+    format_func=lambda x: f"{float(x.split('_')[1]):.0e}"
 )
 
 # create slider for site to investigate
