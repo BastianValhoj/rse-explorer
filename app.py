@@ -57,7 +57,7 @@ use_global_minmax = st.sidebar.checkbox("Use global min/max")
 xyz = np.asanyarray(current_N["xyz"])
 x,y,z = xyz.T
 
-E_idx = np.argwhere(E_options == 0)[0,0] # find the index where E==0 (or the first instance)
+E_idx = np.argwhere(E_options == selected_E)[0,0] # find the index where E==0 (or the first instance)
 RSE = current_N[selected_eta_key][E_idx,...]
 
 if use_global_minmax:
