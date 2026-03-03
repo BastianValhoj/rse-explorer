@@ -40,24 +40,26 @@ selected_nn = st.sidebar.slider("Num NN", min_value=0, max_value=max_nn, value=0
 show_nn_pair = st.sidebar.checkbox("Show paris of NN")
 
 # find global min/max for y-axis on left plot, and colorbar on right plot
-_vmin = 0
-_vmax = 0
-for N_key in n_options:
-    for eta_key in eta_options: 
-        _current = data[f'N_{N_key}'][f'eta_{eta_key}']
-        _rse = _current
-        _vmin = np.min([_vmin,
-            np.min([np.real(_rse), np.imag(_rse)])
-        ])
-        _vmax = np.max([_vmax,
-            np.max([np.real(_rse), np.imag(_rse)])
-        ])
-vmax = np.max(np.abs([_vmin, _vmax])) # find the greatest magnitude
+# _vmin = 0
+# _vmax = 0
+# for N_key in n_options:
+#     for eta_key in eta_options: 
+#         _current = data[f'N_{N_key}'][f'eta_{eta_key}']
+#         _rse = _current
+#         _vmin = np.min([_vmin,
+#             np.min([np.real(_rse), np.imag(_rse)])
+#         ])
+#         _vmax = np.max([_vmax,
+#             np.max([np.real(_rse), np.imag(_rse)])
+#         ])
+vmin = data.attrs["vmin"]
+vmax = data.attrs["vmax"]
+vmax = np.max(np.abs([vmin, vmax])) # find the greatest magnitude
 vmin = -vmax # set min as the negative greatest magnitude
 
 # from selected N and eta, define plotting parameters
 current_N = data[f'N_{selected_N}']
-xyz = current_N["xyz"]
+xyz = np.asanyarray(current_N["xyz"])
 x,y,z = xyz.T
 
 E_idx = np.argwhere(E == 0)[0,0] # find the index where E==0 (or the first instance)
@@ -65,7 +67,7 @@ RSE = current_N[f'eta_{selected_eta}'][E_idx,...]
 
 
 # --- Plotting logic ---
-def render_plot(current_data, N, part, site, nn, nn_pair):
+def render_plot(N, part, site, nn, nn_pair):
     # find imag/real RSE for specific site
     part = part.lower()
     if (part == "real"): #or (("r" in part) and ("i" not in part)):
@@ -156,4 +158,4 @@ def render_plot(current_data, N, part, site, nn, nn_pair):
     st.pyplot(fig)
 
 # run plot using parameters specified by interactive elements 
-render_plot(current, selected_N, part, selected_site, selected_nn, show_nn_pair)
+render_plot(selected_N, part, selected_site, selected_nn, show_nn_pair)
