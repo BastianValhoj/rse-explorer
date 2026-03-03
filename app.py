@@ -73,7 +73,7 @@ xyz = np.asanyarray(current_N["xyz"])
 x,y,z = xyz.T
 
 E_idx = np.argwhere(E_options == 0)[0,0] # find the index where E==0 (or the first instance)
-RSE = current_N[f'eta_{selected_eta:.1e}'][E_idx,...]
+RSE = current_N[selected_eta_key][E_idx,...]
 
 
 # --- Plotting logic ---
