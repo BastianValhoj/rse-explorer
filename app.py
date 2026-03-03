@@ -17,16 +17,21 @@ st.sidebar.header("Parameters")
 # create dropdown menu for N
 n_options = np.asanyarray(data.attrs['N'])
 selected_N = st.sidebar.selectbox("Tiling (N)", options=n_options)
+current_N = data[f'N_{selected_N}']
 
 # create dropdown for energy 
 E_options = np.asanyarray(data.attrs["E"]).round(6)
 selected_E = st.sidebar.selectbox("Energy (E)", options=E_options)
 
 # create dropwdown for eta
-eta_options = np.asanyarray(data.attrs["ETA"])
-eta_idx = st.sidebar.selectbox("Select eta", options=range(len(eta_options)),
+#eta_options = np.asanyarray(data.attrs["ETA"])
+eta_keys = sorted(
+        [k for k in current_N.keys() if k.startswith('eta_')],
+        key=lambda x: float(x.split("_")[1])
+)
+
+selected_eta = st.sidebar.selectbox("Eta", options=eta_keys,
         format_func = lambda i: f"{eta_options[i]:.1e}")
-selected_eta = eta_options[eta_idx]
 
 # create slider for site to investigate
 selected_site = st.sidebar.slider("Site Index", min_value=0, max_value=selected_N-1, value=0)
@@ -60,7 +65,6 @@ vmax = np.max(np.abs([vmin, vmax])) # find the greatest magnitude
 vmin = -vmax # set min as the negative greatest magnitude
 
 # from selected N and eta, define plotting parameters
-current_N = data[f'N_{selected_N}']
 xyz = np.asanyarray(current_N["xyz"])
 x,y,z = xyz.T
 
