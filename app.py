@@ -96,8 +96,8 @@ def render_plot(N, part, site, nn, nn_pair):
     dists_site = np.linalg.norm(diff_site, axis=2).squeeze()
    
     # set ylim for for left plot (with a slight offset so data does not touch y-axis
-    ylim = (vmin*(1-2e-2), 
-            vmax*(1+2e-1)
+    ylim = (vmin, 
+            vmax
     )
     # calcualte xlim as the maximum distance to last atom on the side (from idx 0 to N-1)
     xlim = (-1, np.max(np.linalg.norm(xyz[0, :] - xyz, axis=1))
