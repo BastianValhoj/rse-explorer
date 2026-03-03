@@ -2,12 +2,12 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-import joblib
+import h5py
 
 # Load data
 @st.cache_resource
 def load_data():
-    return joblib.load("RSE_data_tiling_conv.pkl")
+    return h5py.File("RSE_data_tiling_conv.pkl", 'r')
 
 data = load_data()
 
