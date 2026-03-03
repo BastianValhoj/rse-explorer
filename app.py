@@ -4,66 +4,74 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import joblib
 
+# Load data
 @st.cache_resource
 def load_data():
     return joblib.load("RSE_data_tiling_conv.pkl")
 
 data = load_data()
 
+# create header for interactive parameters
 st.sidebar.header("Parameters")
 
-n_options = sorted([int(k) for k in data.keys() if k.isdigit()])
+# create dropdown menu for N
+n_options = data.attrs['N'] 
 selected_N = st.sidebar.selectbox("Tiling (N)", options=n_options)
 
-for key in n_options:
-    _current = data[str(key)]
-    _rse = _current["RSE_re"]
-    _vmin = np.min([np.real(_rse), np.imag(_rse)])
-    _vmax = np.max([np.real(_rse), np.imag(_rse)])
-    
+# create dropdown for energy 
+E_options = data.attrs["E"]
+selected_E = st.sidebar.selectbox("Energy (E)", options=E_options)
 
-vmax = np.max(np.abs([_vmin, _vmax])) # find the greatest magnitude
-vmin = -vmax # set min as the negative greatest magnitude
-    
-    
-        
-current = data[str(selected_N)]
-energies = current["E"]
-xyz = current["xyz"]
-x,y,z = xyz.T
-# E0_idx = np.searchsorted(E, 0) # find the index where E==0 (or the first instance)
-RSE_re = current["RSE_re"]
+# create dropwdown for eta
+eta_options = data.attrs["eta"]
+selected_eta = st.sidebar.selectboz(r"$\eta$", options=eta_options)
 
-RSE_E0 = RSE_re[0, ...]
-
+# create slider for site to investigate
 selected_site = st.sidebar.slider("Site Index", min_value=0, max_value=selected_N-1, value=0)
 
+# create multiple choice for imaginary or real part of RSE
 part = st.sidebar.radio("Part", options=["Imag","Real"]).lower()
 
+# create slider for how many next nearest neighbours to include 
 max_nn = np.max([selected_site, (selected_N - 1 - selected_site)])
 selected_nn = st.sidebar.slider("Num NN", min_value=0, max_value=max_nn, value=0)
+
+# create checkbox for left plot: for a given NN, show only one or both coupling values
 show_nn_pair = st.sidebar.checkbox("Show paris of NN")
+
+# find global min/max for y-axis on left plot, and colorbar on right plot
+_vmin = 0
+_vmax = 0
+for N_key in n_options:
+    for eta_key in eta_options: 
+        _current = data[f'N_{N_key}'][f'eta_{eta_key}']
+        _rse = _current["RSE_re"]
+        _vmin = np.min([_vmin, np.real(_rse), np.imag(_rse)])
+        _vmax = np.max([_vmax, np.real(_rse), np.imag(_rse)])
+vmax = np.max(np.abs([_vmin, _vmax])) # find the greatest magnitude
+vmin = -vmax # set min as the negative greatest magnitude
+
+# from selected N and eta, define plotting parameters
+current_N = data[f'N_{selected_N}']
+xyz = current_N["xyz"]
+x,y,z = xyz.T
+
+E_idx = np.argwhere(E == 0)[0,0] # find the index where E==0 (or the first instance)
+RSE = current_N[f'eta_{selected_eta}'][E_idx,...]
 
 
 # --- Plotting logic ---
-
 def render_plot(current_data, N, part, site, nn, nn_pair):
+    # find imag/real RSE for specific site
     part = part.lower()
-
-
-    
     if (part == "real"): #or (("r" in part) and ("i" not in part)):
-        RSE_E0_part = np.real(RSE_E0)
+        RSE_part = np.real(RSE)
     elif (part == "imag"): #or (("i" in part) and ("r" not in part)):
-        RSE_E0_part = np.imag(RSE_E0)
-        
-    site_coupling = RSE_E0_part[site, :]
+        RSE_part = np.imag(RSE)
+    site_coupling = RSE_part[site, :]
     
     
-    # vmax = np.max(np.abs(RSE_E0_part))
-    # vmin = -vmax
-    
-    # calculate distance  
+    # calculate distances
     all_coords = xyz
     site_coord = xyz[[site],:]
     electrode_coords = xyz[:N, :]
@@ -72,9 +80,10 @@ def render_plot(current_data, N, part, site, nn, nn_pair):
     diff_site = site_coord[:, None, :] - electrode_coords[None, :, :] # (1, 1, N) - (1, M, N) = (1, M, N)
     dists = np.linalg.norm(diff, axis=2).squeeze()
     dists_site = np.linalg.norm(diff_site, axis=2).squeeze()
-    
-    ylim = (np.min(RSE_E0_part)*(1-2e-2), 
-            np.max(RSE_E0_part)*(1+2e-1)
+   
+    # set ylim for for left plot (with a slight offset so data does not touch y-axis
+    ylim = (vmin*(1-2e-2), 
+            vmax*(1+2e-1)
     )
     # calcualte xlim as the maximum distance to last atom on the side (from idx 0 to N-1)
     xlim = (0, np.linalg.norm(xyz[0, :] - xyz[N, :])*(1+1e-1)
@@ -83,8 +92,8 @@ def render_plot(current_data, N, part, site, nn, nn_pair):
     # start figure
     fig, axes = plt.subplots(1,2, figsize=(10, 4), dpi=150)
     
-    # Left figure: scatter plot of distance and coupling 
-    axes[0].scatter(dists[site_mask][N:], site_coupling[site_mask][N:], marker='.', color="r", s=15) # plot points not in first electrode side
+    ## Left figure: scatter plot of distance and coupling 
+    axes[0].scatter(dists[site_mask][N:], site_coupling[site_mask][N:], marker='.', color="r", s=15) # plot points NOT in first electrode side
     axes[0].scatter(dists[site_mask][:N], site_coupling[site_mask][:N], marker='+', color="b", s=30) # plot points IN the first electrode side
     axes[0].axhline(0, color="k",linestyle="--", linewidth=.8)
     
@@ -141,5 +150,6 @@ def render_plot(current_data, N, part, site, nn, nn_pair):
     
     
     st.pyplot(fig)
-    
+
+# run plot using parameters specified by interactive elements 
 render_plot(current, selected_N, part, selected_site, selected_nn, show_nn_pair)
