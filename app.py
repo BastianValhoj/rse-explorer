@@ -23,7 +23,7 @@ E_options = data.attrs["E"]
 selected_E = st.sidebar.selectbox("Energy (E)", options=E_options)
 
 # create dropwdown for eta
-eta_options = data.attrs["eta"]
+eta_options = data.attrs["ETA"]
 selected_eta = st.sidebar.selectboz(r"$\eta$", options=eta_options)
 
 # create slider for site to investigate
