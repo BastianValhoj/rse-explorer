@@ -31,7 +31,7 @@ eta_keys = sorted(
 )
 
 selected_eta = st.sidebar.selectbox("Eta", options=eta_keys,
-        format_func = lambda i: f"{eta_options[i]:.1e}")
+        format_func = lambda i: f"{eta_keys[i]:.0e}")
 
 # create slider for site to investigate
 selected_site = st.sidebar.slider("Site Index", min_value=0, max_value=selected_N-1, value=0)
