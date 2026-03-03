@@ -15,15 +15,15 @@ data = load_data()
 st.sidebar.header("Parameters")
 
 # create dropdown menu for N
-n_options = data.attrs['N'] 
+n_options = np.asanyarray(data.attrs['N'])
 selected_N = st.sidebar.selectbox("Tiling (N)", options=n_options)
 
 # create dropdown for energy 
-E_options = data.attrs["E"].round(6)
+E_options = np.asanyarray(data.attrs["E"]).round(6)
 selected_E = st.sidebar.selectbox("Energy (E)", options=E_options)
 
 # create dropwdown for eta
-eta_options = data.attrs["ETA"]
+eta_options = np.asanyarray(data.attrs["ETA"])
 selected_eta = st.sidebar.selectbox("Eta", options=eta_options)
 
 # create slider for site to investigate
