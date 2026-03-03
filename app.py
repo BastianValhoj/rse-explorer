@@ -19,7 +19,7 @@ n_options = data.attrs['N']
 selected_N = st.sidebar.selectbox("Tiling (N)", options=n_options)
 
 # create dropdown for energy 
-E_options = data.attrs["E"]
+E_options = data.attrs["E"].round(6)
 selected_E = st.sidebar.selectbox("Energy (E)", options=E_options)
 
 # create dropwdown for eta
@@ -45,7 +45,7 @@ _vmax = 0
 for N_key in n_options:
     for eta_key in eta_options: 
         _current = data[f'N_{N_key}'][f'eta_{eta_key}']
-        _rse = _current["RSE_re"]
+        _rse = _current
         _vmin = np.min([_vmin, np.real(_rse), np.imag(_rse)])
         _vmax = np.max([_vmax, np.real(_rse), np.imag(_rse)])
 vmax = np.max(np.abs([_vmin, _vmax])) # find the greatest magnitude
