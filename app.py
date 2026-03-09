@@ -66,10 +66,10 @@ if use_global_minmax:
     vmax = np.max(np.abs([vmin, vmax])) # find the greatest magnitude
     vmin = -vmax # set min as the negative greatest magnitude
 elif not use_global_minmax:
-    vmin = np.min([np.real(RSE), np.imag(RSE)])
-    vmax = np.max([np.real(RSE), np.imag(RSE)])
-    vmax = np.max(np.abs([vmin, vmax]))
-    vmin = -vmax
+#    vmin = np.min([np.real(RSE), np.imag(RSE)])
+#    vmax = np.max([np.real(RSE), np.imag(RSE)])
+#    vmax = np.max(np.abs([vmin, vmax]))
+#    vmin = -vmax
 
 
 
@@ -96,6 +96,8 @@ def render_plot(N, part, site, nn, nn_pair):
     dists_site = np.linalg.norm(diff_site, axis=2).squeeze()
    
     # set ylim for for left plot (with a slight offset so data does not touch y-axis
+    vmax = np.abs(site_coupling).max()
+    vmin = -vmax
     ylim = (vmin, 
             vmax
     )
