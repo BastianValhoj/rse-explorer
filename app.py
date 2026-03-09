@@ -65,7 +65,7 @@ if use_global_minmax:
     vmax = data.attrs["vmax"]
     vmax = np.max(np.abs([vmin, vmax])) # find the greatest magnitude
     vmin = -vmax # set min as the negative greatest magnitude
-elif not use_global_minmax:
+#elif not use_global_minmax:
 #    vmin = np.min([np.real(RSE), np.imag(RSE)])
 #    vmax = np.max([np.real(RSE), np.imag(RSE)])
 #    vmax = np.max(np.abs([vmin, vmax]))
