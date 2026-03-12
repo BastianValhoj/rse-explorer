@@ -38,7 +38,7 @@ selected_eta_key = st.sidebar.selectbox(
 )
 
 # create slider for site to investigate
-selected_site = st.sidebar.slider("Site Index", min_value=0, max_value=selected_N-1, value=0)
+selected_site = st.sidebar.slider("Site Index", min_value=0, max_value=selected_N-1, value=(selected_N-1)//2)
 
 # create multiple choice for imaginary or real part of RSE
 part = st.sidebar.radio("Part", options=["Imag","Real"]).lower()
