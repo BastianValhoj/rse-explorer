@@ -114,7 +114,6 @@ def render_plot(N, part, site, nn, nn_pair):
     axes[0].scatter(dists[site_mask][num_elec:], site_coupling[site_mask][num_elec:], marker='.', color='grey', s=15, label='device')
     axes[0].scatter(dists[site_mask][N:num_elec], site_coupling[site_mask][N:num_elec], marker='x', color="r", s=15, label='other edges') # plot points NOT in first electrode side
     axes[0].scatter(dists[site_mask][:N], site_coupling[site_mask][:N], marker='+', color="b", s=30, label="Same edge") # plot points IN the first electrode side
-    axes[0].scatter(dists[
     axes[0].axhline(0, color="k",linestyle="--", linewidth=.8)
     
     # left axis params
