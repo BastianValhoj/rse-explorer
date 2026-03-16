@@ -71,7 +71,8 @@ if use_global_minmax:
 #    vmax = np.max(np.abs([vmin, vmax]))
 #    vmin = -vmax
 
-
+elec_idx = current_N['elec_idx']
+num_elec = len(elec_idx)
 
 # --- Plotting logic ---
 def render_plot(N, part, site, nn, nn_pair):
@@ -109,8 +110,11 @@ def render_plot(N, part, site, nn, nn_pair):
     fig, axes = plt.subplots(1,2, figsize=(10, 4), dpi=150)
     
     ## Left figure: scatter plot of distance and coupling 
-    axes[0].scatter(dists[site_mask][N:], site_coupling[site_mask][N:], marker='.', color="r", s=15) # plot points NOT in first electrode side
-    axes[0].scatter(dists[site_mask][:N], site_coupling[site_mask][:N], marker='+', color="b", s=30) # plot points IN the first electrode side
+    # plot all device atoms
+    axes[0].scatter(dists[site_mask][num_elec:], site_coupling[site_mask][num_elec:], marker='.', color='grey', s=15, label='device')
+    axes[0].scatter(dists[site_mask][N:num_elec], site_coupling[site_mask][N:num_elec], marker='x', color="r", s=15, label='other edges') # plot points NOT in first electrode side
+    axes[0].scatter(dists[site_mask][:N], site_coupling[site_mask][:N], marker='+', color="b", s=30, label="Same edge") # plot points IN the first electrode side
+    axes[0].scatter(dists[
     axes[0].axhline(0, color="k",linestyle="--", linewidth=.8)
     
     # left axis params
